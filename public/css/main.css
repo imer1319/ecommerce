@@ -1,0 +1,12 @@
+.select2-container{
+    display: inline !important;
+}
+.badge {
+    padding: 3px 10px !important;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice{
+    background-color: #f5365c;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
+    color: antiquewhite;
+}

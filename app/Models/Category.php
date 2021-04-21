@@ -20,4 +20,9 @@ class Category extends Model
     {
         return $this->morphOne(Image::class, 'imageable');
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }
