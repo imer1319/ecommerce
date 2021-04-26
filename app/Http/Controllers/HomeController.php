@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\Tag;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class HomeController extends Controller
 {
@@ -23,6 +27,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $categories = Category::all()->count();
+        $products = Product::all()->count();
+        $tags = Tag::all()->count();
+        $roles = Role::all()->count();
+        return view('home', compact('categories','products','tags','roles'));
     }
 }
