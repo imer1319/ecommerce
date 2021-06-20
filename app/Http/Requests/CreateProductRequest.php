@@ -29,7 +29,8 @@ class CreateProductRequest extends FormRequest
                 'required',
             ],
             'slug' => [
-                'required|unique:products,slug',
+                'required',
+                'unique:products,slug',
             ],
             'price' => [
                 'required',
@@ -39,9 +40,6 @@ class CreateProductRequest extends FormRequest
             ],
             'category_id' => [
                 'required',
-            ],
-            'tags.*' => [
-                'integer',
             ],
             'tags' => [
                 'array',

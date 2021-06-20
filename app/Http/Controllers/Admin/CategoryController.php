@@ -12,15 +12,23 @@ use Yajra\DataTables\DataTables;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:categories_index')->only(['index','dataTable']);
+        $this->middleware('permission:categories_create')->only(['create','store']);
+        $this->middleware('permission:categories_edit')->only(['edit','update']);
+        $this->middleware('permission:categories_show')->only('show');
+        $this->middleware('permission:categories_destroy')->only('destroy');
+    }
+
     public function dataTable()
     {
-        return DataTables::of(Category::select('id', 'name', 'slug'))
-            ->addColumn('image', function (Category $category) {
-                $path = $category->image->url;
-                return '<img src="' .'/image/'. $path . '" class="avatar rounded-circle shadow-sm border" align="center" />';
+        return DataTables::of(Category::select('id', 'name', 'slug','icon'))
+            ->addColumn('icon', function (Category $category) {
+                return "<i class='$category->icon'></i>";
             })
             ->addColumn('btn', 'admin.categories.partials.btn')
-            ->rawColumns(['btn', 'image'])
+            ->rawColumns(['btn', 'icon'])
             ->toJson();
     }
 
@@ -36,14 +44,7 @@ class CategoryController extends Controller
 
     public function store(CreateCategoryRequest $request)
     {
-        if ($request->hasFile('url')) {
-            $file = $request->file('url');
-            $path = time().$file->getClientOriginalName();
-            $file->move(public_path().'/image',$path);
-        }
-        $image = new Image(['url' => $path]);
-        $category = Category::create($request->validated());
-        $category->image()->save($image);
+        Category::create($request->validated());
         return redirect()->route('categories.index');
     }
 

@@ -9,16 +9,11 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','slug'];
+    protected $fillable = ['name','slug','icon'];
 
     public function getRouteKeyName()
     {
         return 'slug';
-    }
-
-    public function image()
-    {
-        return $this->morphOne(Image::class, 'imageable');
     }
 
     public function products()

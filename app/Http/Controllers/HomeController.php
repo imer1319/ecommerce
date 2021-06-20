@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Tag;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Spatie\Permission\Models\Role;
+use App\Models\User;
+use DB;
 
 class HomeController extends Controller
 {
@@ -25,12 +27,28 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function home()
     {
         $categories = Category::all()->count();
         $products = Product::all()->count();
         $tags = Tag::all()->count();
         $roles = Role::all()->count();
-        return view('home', compact('categories','products','tags','roles'));
+
+        $year = [];
+        $user = [];
+        for ($i = -4; $i < 1; $i++) {
+            $year[] = strval(date("Y") +$i);
+        }
+        foreach ($year as $key => $value) {
+            $user[] = User::where(\DB::raw("DATE_FORMAT(created_at, '%Y')"), $value)->count();
+        }
+
+        return view('home', compact('categories', 'products', 'tags', 'roles'))
+            ->with('year', json_encode($year, JSON_NUMERIC_CHECK))->with('user', json_encode($user, JSON_NUMERIC_CHECK));
+    }
+
+    public function dashboard()
+    {
+        return view('dashboard');
     }
 }

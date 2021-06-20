@@ -14,11 +14,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['role:User', 'verified'])->group(function () {
+
+    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+
+});
+
+
+Route::middleware(['role:Administrator'])->group(function () {
+
+    Route::get('/home', [HomeController::class, 'home'])->name('home');
 
     Route::resource('users', UserController::class);
     Route::get('datatableUser', [UserController::class, 'dataTable'])->name('user.dataTable');
@@ -42,5 +50,4 @@ Route::middleware(['auth'])->group(function () {
     Route::post('password', [PasswordController::class, 'update'])->name('password.updated');
     Route::post('profile', [PasswordController::class, 'updateProfile'])->name('password.updateProfile');
     Route::post('profile/destroy', [PasswordController::class, 'destroy'])->name('password.destroyProfile');
-
 });

@@ -35,7 +35,7 @@
                     {data: 'id'},
                     {data: 'name'},
                     {data: 'slug'},
-                    {data: 'image',"orderable": false, "searchable": false},
+                    {data: 'icon',"orderable": false, "searchable": false},
                     {data: 'btn', "orderable": false, "searchable": false},
                 ],
                 "pageLength": 7,
