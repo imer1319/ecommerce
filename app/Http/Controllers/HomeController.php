@@ -6,9 +6,9 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Tag;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
-use DB;
 
 class HomeController extends Controller
 {
@@ -34,18 +34,25 @@ class HomeController extends Controller
         $tags = Tag::all()->count();
         $roles = Role::all()->count();
 
+        $date = Carbon::now();
         $year = [];
         $user = [];
-        for ($i = -4; $i < 1; $i++) {
-            $year[] = strval(date("Y") +$i);
-        }
-        foreach ($year as $key => $value) {
-            $user[] = User::where(\DB::raw("DATE_FORMAT(created_at, '%Y')"), $value)->count();
+        $meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+        $val_months = [];
+        for ($i = 1 ; $i<= 12; $i++){
+            $val_months[] = User::whereYear('created_at',$date->year)->whereMonth('created_at', '=', $i)->count();
         }
 
+        for ($i = 4; $i > -1; $i--) {
+            $year[] = $date->year - $i;
+        }
+        foreach ($year as $value) {
+            $user[] = User::where(DB::raw("DATE_FORMAT(created_at, '%Y')"), $value)->count();
+        }
         return view('home', compact('categories', 'products', 'tags', 'roles'))
-            ->with('year', json_encode($year, JSON_NUMERIC_CHECK))->with('user', json_encode($user, JSON_NUMERIC_CHECK));
+            ->with('year', json_encode($year, JSON_NUMERIC_CHECK))->with('user', json_encode($user, JSON_NUMERIC_CHECK))->with('meses', json_encode($meses, JSON_NUMERIC_CHECK))->with('val_months', json_encode($val_months, JSON_NUMERIC_CHECK));
     }
+
 
     public function dashboard()
     {

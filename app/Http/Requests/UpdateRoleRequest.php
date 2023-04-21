@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRoleRequest extends FormRequest
 {
@@ -24,8 +25,10 @@ class UpdateRoleRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'permissions' => 'array'
+            'name' => [
+                'required',
+                Rule::unique('roles')->ignore($this->route('role')->id)
+            ],
         ];
     }
 }

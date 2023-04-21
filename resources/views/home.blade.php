@@ -93,10 +93,17 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xl-8 col-md-12 col-lg-8">
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <canvas id="user-register" height="280" width="600"></canvas>
+                    <canvas id="user-register" height="150px"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="sales_for_mounth" height="300px"></canvas>
                 </div>
             </div>
         </div>
@@ -108,32 +115,47 @@
     <script>
         let year = <?php echo $year; ?>;
         let user = <?php echo $user; ?>;
+        let meses = <?php echo $meses; ?>;
+        let val_months = <?php echo $val_months; ?>;
+
         let barChartData = {
-            labels: year,
+            labels: meses,
             datasets: [{
                 label: 'usuarios',
-                data: user,
+                data: val_months,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
+                    'rgb(227, 34, 205, 0.2)',
                     'rgba(255, 205, 86, 0.2)',
                     'rgba(75, 192, 192, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
+                    'rgb(0, 113, 206, 0.2)',
+                    'rgba(240, 208, 225, 0.2)',
+                    'rgba(145, 116, 201, 0.2)',
+                    'rgba(80, 146, 169, 0.2)',
+                    'rgba(0, 0, 246, 0.2)',
+                    'rgba(247, 139, 5, 0.2)',
+                    'rgba(145, 0, 247, 0.2)',
                 ],
                 borderColor: [
                     'rgb(255, 99, 132)',
-                    'rgb(255, 159, 64)',
+                    'rgb(227, 34, 205)',
                     'rgb(255, 205, 86)',
                     'rgb(75, 192, 192)',
                     'rgb(54, 162, 235)',
-                    'rgb(153, 102, 255)',
+                    'rgb(0, 113, 206)',
+                    'rgb(240, 208, 225)',
+                    'rgb(145, 116, 201)',
+                    'rgb(80, 146, 169)',
+                    'rgb(0, 0, 246)',
+                    'rgb(247, 139, 5)',
+                    'rgb(145, 0, 247)',
                 ],
                 borderWidth: 1
             }]
         };
 
-        window.onload = function() {
+        window.onload = function () {
             let ctx = document.getElementById("user-register").getContext("2d");
             window.myBar = new Chart(ctx, {
                 type: 'bar',
@@ -153,7 +175,25 @@
                     }
                 }
             });
-
+            let ctx2 = document.getElementById("sales_for_mounth").getContext("2d");
+            window.myBar = new Chart(ctx2, {
+                type: 'pie',
+                data: barChartData,
+                options: {
+                    elements: {
+                        rectangle: {
+                            borderWidth: 2,
+                            borderColor: '#c1c1c1',
+                            borderSkipped: 'bottom'
+                        }
+                    },
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: 'Usuarios registrados por año'
+                    }
+                }
+            });
         };
     </script>
 @endsection

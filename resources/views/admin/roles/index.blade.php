@@ -5,7 +5,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5>Listado de roles</h5>
             @can('roles_create')
-                <a href="{{ route('roles.create') }}" class="btn btn-success btn-sm">Crear nuevo</a>
+                <a href="{{ route('admin.roles.create') }}" class="btn btn-success btn-sm">Crear nuevo</a>
             @endcan
         </div>
         <div class="card-body">
@@ -15,8 +15,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Permisos</th>
-                        <th>&nbsp</th>
+                        <th>Acciones</th>
                     </tr>
                     </thead>
                 </table>
@@ -31,11 +30,10 @@
             $('#tag-table').DataTable({
                 serverSide: true,
                 processing: true,
-                ajax: '{!! route('role.dataTable') !!}',
+                ajax: '{!! route('admin.role.dataTable') !!}',
                 columns: [
                     {data: 'id'},
                     {data: 'name'},
-                    {data: 'permissions'},
                     {data: 'btn', "orderable": false, "searchable": false},
                 ],
                 "pageLength": 7,

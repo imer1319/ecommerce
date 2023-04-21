@@ -38,7 +38,8 @@
         <!-- Main Content -->
         <div class="main-content">
             <section class="section">
-
+                @include('admin.partials.flash-error')
+                @include('admin.partials.flash-success')
                 @yield('content-admin')
 
             </section>

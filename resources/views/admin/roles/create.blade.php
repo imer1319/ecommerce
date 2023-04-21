@@ -8,7 +8,7 @@
                     <h4>Registrar nuevo rol</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('roles.store') }}" method="POST">
+                    <form action="{{ route('admin.roles.store') }}" method="POST">
                         @csrf
 
                         @include('admin.roles.partials.form',['button' => 'Registrar'])

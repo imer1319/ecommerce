@@ -23,18 +23,8 @@ class RoleController extends Controller
     public function dataTable()
     {
         return DataTables::of(Role::select('id', 'name'))
-            ->addColumn('permissions', function (Role $role) {
-                $return = '';
-                foreach ($role->permissions as $key => $permision) {
-                    $return .= '<span class="badge badge-primary mr-1">' . $permision->name . '</span>';
-                    if (($key+1) % 4 == 0) {
-                        $return .= '<br>';
-                    }
-                }
-                return $return;
-            })
             ->addColumn('btn', 'admin.roles.partials.btn')
-            ->rawColumns(['btn', 'permissions'])
+            ->rawColumns(['btn'])
             ->toJson();
     }
 
@@ -46,40 +36,66 @@ class RoleController extends Controller
     public function create()
     {
         $role = new Role();
-        $permissions = Permission::all()->pluck('name', 'id');
+
+        $permissions = Permission::all();
+
         return view('admin.roles.create', compact('permissions', 'role'));
     }
 
     public function store(CreateRoleRequest $request)
     {
         $role = Role::create($request->validated());
-        $role->permissions()->sync($request->input('permissions', []));
-        return redirect()->route('roles.index');
+
+        if ($request->has('permissions')) {
+
+            $role->givePermissionTo($request->permissions);
+
+        }
+
+        return redirect()->route('admin.roles.index')->withFlash('El rol se ha creado correctamente');;
     }
 
     public function show(Role $role)
     {
         $role->load('permissions');
+
         return view('admin.roles.show', compact('role'));
     }
 
     public function edit(Role $role)
     {
-        $permissions = Permission::all()->pluck('name', 'id');
+        $permissions = Permission::all();
+
         $role->load('permissions');
+
         return view('admin.roles.edit', compact('role', 'permissions'));
     }
 
     public function update(UpdateRoleRequest $request, Role $role)
     {
         $role->update($request->validated());
-        $role->permissions()->sync($request->input('permissions', []));
-        return redirect()->route('roles.index');
+
+        $role->permissions()->detach();
+
+        if ($request->has('permissions')) {
+
+            $role->givePermissionTo($request->permissions);
+
+        }
+
+        return redirect()->route('admin.roles.index')->withFlash('El rol se ha modificado correctamente');
     }
 
     public function destroy(Role $role)
     {
+        if ($role->id === 1) {
+
+            return redirect()->route('admin.roles.index')->withFlash('Este rol no se puede eliminar');
+       
+        }
+
         $role->delete();
-        return redirect()->back();
+
+        return redirect()->back()->withFlash('Se ha eliminado el rol');;
     }
 }

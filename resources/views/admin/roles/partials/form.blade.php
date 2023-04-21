@@ -1,41 +1,52 @@
 <div class="row">
     <div class="form-group col-md-10 offset-md-1">
         <label class="form-control-label">Name</label>
-        <input type="text" class="form-control @error('name') is-invalid @enderror"
-               name="name" value="{{ old('name', $role->name) }}" required autocomplete="name" autofocus>
+        @if ($role->name == 'Administrator')
+            <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
+                value="{{ old('name', $role->name) }}" required autocomplete="name" readonly>
+        @else
+            <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
+                value="{{ old('name', $role->name) }}" required autocomplete="name" autofocus>
+        @endif
         @error('name')
-        <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
         @enderror
     </div>
 
     <div class="form-group col-md-10 offset-md-1">
-        <label class="required"
-               for="permissions">Permisos</label>
-        <div style="padding-bottom: 4px">
-            <span class="btn btn-default btn-sm select-all" style="border-radius: 0">Seleccionar todo</span>
-            <span class="btn btn-default btn-sm deselect-all" style="border-radius: 0">Deseleccionar</span>
+        <label class="required" for="permissions">Permisos</label>
+        <div class="pb-2">
+            <span class="btn btn-light btn-sm select-all">Seleccionar todo</span>
+            <span class="btn btn-light btn-sm deselect-all">Deseleccionar</span>
         </div>
-        <select
-            class="form-control select2 {{ $errors->has('permissions') ? 'is-invalid' : '' }}"
-            name="permissions[]" id="permissions" multiple required>
-            @foreach($permissions as $id => $permissions)
-                <option
-                    value="{{ $id }}" {{ (in_array($id, old('permissions', [])) || $role->permissions->contains($id)) ? 'selected' : '' }}>{{ $permissions }}</option>
+        <div class="row">
+            @foreach ($permissions as $permission)
+                <div class="col-md-4">
+                    <div class="checkbox">
+                        <label>
+                            <input name="permissions[]" type="checkbox" value="{{ $permission->name }}"
+                                {{ $role->permissions->contains($permission->id) || collect(old('permissions'))->contains($permission->name)
+                                    ? 'checked'
+                                    : '' }}
+                                class="permisos">
+                            {{ $permission->description }}
+                        </label>
+                    </div>
+                </div>
             @endforeach
-        </select>
-        @if($errors->has('permissions'))
+        </div>
+
+        @if ($errors->has('permissions'))
             <div class="invalid-feedback">
                 {{ $errors->first('permissions') }}
             </div>
         @endif
     </div>
 
-    <div class="form-group col-md-10 offset-md-1 d-flex">
-        <a href="{{ route('roles.index') }}" class="btn btn-block btn-secondary">Cancelar</a>
-        <button type="submit" class="btn btn-primary btn-block mt-0">
-            {{ $button }}
-        </button>
+    <div class="form-group btn-group">
+        <a href="{{ route('admin.roles.index') }}" class="btn btn-light">Regresar</a>
+        <button class="btn btn-primary">{{ $button }}</button>
     </div>
 </div>

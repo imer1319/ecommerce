@@ -9,5 +9,10 @@ class Profile extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
+    protected $fillable = ['last_names','phone','ci','user_id'];
+
+    public function location()
+    {
+        return $this->hasOne(Location::class);
+    }
 }

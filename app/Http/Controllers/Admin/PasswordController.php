@@ -15,9 +15,14 @@ class PasswordController extends Controller
 
     public function update(UpdatePasswordRequest $request)
     {
-        auth()->user()->update($request->validated());
+        $user = auth()->user();
+        $user->update($request->validated());
 
-        return redirect()->route('home')->with('message','modificado correctamente');
+        if($user->hasRole('Administrator')){
+            return redirect()->route('home');
+        }else{
+            return redirect()->route('dashboard');
+        }
     }
 
     public function updateProfile(UpdateProfileRequest $request)
@@ -26,7 +31,11 @@ class PasswordController extends Controller
 
         $user->update($request->validated());
 
-        return redirect()->route('home')->with('message','modificado correctamente');
+        if($user->hasRole('Administrator')){
+            return redirect()->route('home');
+        }else{
+            return redirect()->route('dashboard');
+        }
     }
 
     public function destroy()

@@ -23,18 +23,15 @@
                                 <th>Permisos</th>
                                 <td>
                                     @foreach($role->permissions as $key => $permissions)
-                                        <span class="badge badge-primary">{{ $permissions->name }}</span>
-                                        @if($loop->index % 4 == 0)
-                                            <br>
-                                        @endif
+                                        <span>{{ $permissions->description }}, </span>
                                     @endforeach
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="form-group col-md-6">
-                        <a class="btn btn-primary btn-block" href="{{ route('roles.index') }}">
+                    <div class="form-group">
+                        <a class="btn btn-primary" href="{{ route('admin.roles.index') }}">
                             Volver
                         </a>
                     </div>

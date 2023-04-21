@@ -6,8 +6,8 @@
     </div>
     <ul class="sidebar-menu">
         <li class="menu-header">Main</li>
-        <li class="dropdown {{ Route::is('home') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('home') }}"><i data-feather="monitor"></i><span>Dashboard</span></a>
+        <li class="dropdown {{ Route::is('admin.home') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.home') }}"><i data-feather="monitor"></i><span>Dashboard</span></a>
         </li>
         <li class="dropdown {{ Route::is('roles.*') || Route::is('users.*') ? 'active' : '' }}">
             <a href="#" class="menu-toggle nav-link has-dropdown"><i
@@ -15,12 +15,12 @@
             <ul class="dropdown-menu">
                 @can('roles_index')
                     <li class="{{ Route::is('roles.*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('roles.index') }}">Roles</a>
+                        <a class="nav-link" href="{{ route('admin.roles.index') }}">Roles</a>
                     </li>
                 @endcan
                 @can('users_index')
                     <li class="{{ Route::is('users.*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('users.index') }}">Usuarios</a>
+                        <a class="nav-link" href="{{ route('admin.users.index') }}">Usuarios</a>
                     </li>
                 @endcan
             </ul>
@@ -31,24 +31,24 @@
             <ul class="dropdown-menu">
                 @can('tags_index')
                     <li class="{{ Route::is('tags.*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('tags.index') }}">Tags</a>
+                        <a class="nav-link" href="{{ route('admin.tags.index') }}">Tags</a>
                     </li>
                 @endcan
                 @can('categories_index')
                     <li class="{{ Route::is('categories.*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('categories.index') }}">Categories</a>
+                        <a class="nav-link" href="{{ route('admin.categories.index') }}">Categories</a>
                     </li>
                 @endcan
                 @can('products_index')
                     <li class="{{ Route::is('products.*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('products.index') }}">Products</a>
+                        <a class="nav-link" href="{{ route('admin.products.index') }}">Products</a>
                     </li>
                 @endcan
             </ul>
         </li>
         @can('user_management_access')
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('password.edit') }}">
+                <a class="nav-link" href="{{ route('admin.password.edit') }}">
                     <i data-feather="briefcase"></i>
                     <span class="nav-link-text">Cambiar contraseña</span>
                 </a>
